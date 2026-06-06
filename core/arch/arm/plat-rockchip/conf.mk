@@ -87,6 +87,7 @@ ifeq ($(PLATFORM_FLAVOR),rk3576)
 include core/arch/arm/cpu/cortex-armv8-0.mk
 $(call force,CFG_TEE_CORE_NB_CORE,8)
 $(call force,CFG_AUTO_MAX_PA_BITS,y)
+$(call force,CFG_CRYPTO_WITH_CE,y)
 
 CFG_TZDRAM_START ?= 0x70000000
 CFG_TZDRAM_SIZE  ?= 0x02000000
