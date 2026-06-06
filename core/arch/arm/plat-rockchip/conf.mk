@@ -94,10 +94,20 @@ CFG_SHMEM_START  ?= 0x72000000
 CFG_SHMEM_SIZE   ?= 0x00400000
 
 # Enable the shared Rockchip Secure OTP driver (read path).
-# ROCKCHIP_OTP_HUK_INDEX = 0x80 (OTP_S words 0x80â0x83, bytes 512â527)
-# confirmed for RK3576 â differs from RK3588 (0x104).  Writing (OTP
+# ROCKCHIP_OTP_HUK_INDEX = 0x80 (OTP_S words 0x80–0x83, bytes 512–527)
+# confirmed for RK3576 — differs from RK3588 (0x104).  Writing (OTP
 # provisioning) is gated by CFG_RK3576_PERSIST_HUK which defaults to n.
 $(call force,CFG_ROCKCHIP_OTP,y)
+
+# RKRNG_S hardware TRNG (0x2a440000).
+# Set CFG_RK3576_RKRNG=y to provide hw_get_random_bytes() using real hardware
+# entropy.  When enabled, plat_get_random_stack_canaries() is also overridden
+# to read RKRNG directly (core_init_mmu_map runs before thread_init_canaries,
+# so the IO mapping is already live), allowing CFG_WITH_SOFTWARE_PRNG=n.
+CFG_RK3576_RKRNG ?= n
+ifeq ($(CFG_RK3576_RKRNG),y)
+$(call force,CFG_WITH_SOFTWARE_PRNG,n)
+endif
 
 # Debug UART -- match TF-A's RK_DBG_UART_BASE (UART0 @ 0x2ad40000) so the
 # OP-TEE banner appears on the same serial cable as the BL31 log.
