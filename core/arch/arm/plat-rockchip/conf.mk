@@ -93,6 +93,11 @@ CFG_TZDRAM_SIZE  ?= 0x02000000
 CFG_SHMEM_START  ?= 0x72000000
 CFG_SHMEM_SIZE   ?= 0x00400000
 $(call force,CFG_ROCKCHIP_OTP,y)
+
+CFG_RK3576_RKRNG ?= n
+ifeq ($(CFG_RK3576_RKRNG),y)
+$(call force,CFG_WITH_SOFTWARE_PRNG,n)
+endif
 endif
 
 ifeq ($(platform-flavor-armv8),1)
