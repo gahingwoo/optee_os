@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: BSD-2-Clause
 /*
  * Rockchip RKRNG secure TRNG driver for RK3576.
- *
- * The RKRNG IP is found on RK3576/RK3562/RK3528. This driver targets the
- * secure instance (RKRNG_S_BASE) accessible only from secure world.
- *
- * Register layout matches the Linux rockchip-rng.c driver (rk3576_rng_*).
  */
 
 #include <initcall.h>
@@ -58,12 +53,6 @@ TEE_Result hw_get_random_bytes(void *buf, size_t len)
 
 	exceptions = cpu_spin_lock_xsave(&rkrng_lock);
 
-	/*
-	 * Lazy-map on first use: hw_get_random_bytes() may be called from
-	 * service_init context (e.g. HUK derivation) before driver_init()
-	 * has run.  phys_to_virt_io() is safe here because core_init_mmu_map
-	 * runs in entry_a64.S well before any initcall.
-	 */
 	if (!rkrng_base)
 		rkrng_base = (vaddr_t)phys_to_virt_io(RKRNG_S_BASE,
 						       RKRNG_S_SIZE);

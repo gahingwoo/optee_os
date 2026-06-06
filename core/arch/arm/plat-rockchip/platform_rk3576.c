@@ -61,22 +61,6 @@ int platform_secure_ddr_region(int rgn, paddr_t st, size_t sz)
 	return 0;
 }
 
-/* -----------------------------------------------------------------------
- * Hardware Unique Key (HUK) -- Secure OTP-backed key derivation
- *
- * The shared rockchip_otp.c driver programs the Secure OTP at OTP_S_BASE
- * using the same auto-mode register protocol as RK3588.
- *
- * OTP write (provisioning) is controlled by CFG_RK3576_PERSIST_HUK.
- * Default is off; enable once you are ready to commit the HUK to OTP.
- * OTP writes are irreversible.
- *
- * When CFG_RK3576_PERSIST_HUK=n the first-boot HUK is derived from the
- * software PRNG; it will differ across reboots until OTP provisioning is
- * enabled.  This is intentional: it keeps Stage-1 bringup safe.
- * -----------------------------------------------------------------------
- */
-
 static struct mutex huk_mutex = MUTEX_INITIALIZER;
 static struct tee_hw_unique_key *huk_cache;
 
@@ -222,15 +206,6 @@ out:
 	return res;
 }
 
-/* -----------------------------------------------------------------------
- * Early stack-canary entropy (CFG_RK3576_RKRNG=y, CFG_WITH_SOFTWARE_PRNG=n)
- *
- * core_init_mmu_map() runs in entry_a64.S before thread_init_canaries(), so
- * the RKRNG_S_BASE IO region is already mapped and phys_to_virt_io() works.
- * This override lets us disable the SW PRNG while still seeding canaries
- * from real hardware entropy.
- * -----------------------------------------------------------------------
- */
 #ifdef CFG_RK3576_RKRNG
 void plat_get_random_stack_canaries(void *buf, size_t ncan, size_t size)
 {

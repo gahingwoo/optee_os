@@ -1,8 +1,6 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 /*
  * Rockchip RKRNG register definitions (RK3576/RK3562/RK3528).
- * Used by both the driver (rockchip_rkrng.c) and the early platform
- * canary override (platform_rk3576.c).
  */
 
 #ifndef ROCKCHIP_RKRNG_H

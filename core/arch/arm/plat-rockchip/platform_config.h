@@ -152,23 +152,21 @@
 #define PMU1SGRF_FW_BASE	0x26003000
 #define PMU1SGRF_FW_SIZE	SIZE_K(4)
 
-/*
- * RKRNG_S -- secure-side true RNG (RKRNG IP, distinct from RK3588's TRNG_V1).
- * Registers: CTRL=0x10, STATE=0x14, DATA0=0x50 (8x32-bit = 256 bits/req).
- */
 #define RKRNG_S_BASE			0x2a440000
 #define RKRNG_S_SIZE			SIZE_K(64)
 
-/*
- * Secure OTP (OTP_S) -- accessible from secure world only.
- * HUK: words 0x80–0x83 (bytes 512–527, 128-bit).
- * RK3576 OTP_S is 512 words (0x200 max), smaller than RK3588 (0x300).
- */
 #define OTP_S_BASE			0x2a480000
 #define OTP_S_SIZE			SIZE_K(64)
 
-#define ROCKCHIP_OTP_HUK_INDEX		0x80	/* RK3576 confirmed; RK3588 uses 0x104 */
-#define ROCKCHIP_OTP_HUK_SIZE		0x4	/* 4 words = 16 bytes */
+#define ROCKCHIP_OTP_HUK_INDEX		0x80	/* differs from RK3588 (0x104) */
+#define ROCKCHIP_OTP_HUK_SIZE		0x4
+
+#define ROCKCHIP_OTP_SECURE_BOOT_STATUS_INDEX	0x8
+#define ROCKCHIP_OTP_SECURE_BOOT_STATUS_SIZE	0x1
+#define ROCKCHIP_OTP_SECURE_BOOT_STATUS_ENABLE	0x00ff
+
+#define ROCKCHIP_OTP_RSA_HASH_INDEX		0x184
+#define ROCKCHIP_OTP_RSA_HASH_SIZE		0x4
 
 #else
 #error "Unknown platform flavor"
