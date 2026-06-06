@@ -152,6 +152,18 @@
 #define PMU1SGRF_FW_BASE	0x26003000
 #define PMU1SGRF_FW_SIZE	SIZE_K(4)
 
+
+/*
+ * Secure OTP (OTP_S) -- accessible from secure world only.
+ * HUK: words 0x80â0x83 (bytes 512â527, 128-bit).
+ * RK3576 OTP_S is 512 words (0x200 max), smaller than RK3588 (0x300).
+ */
+#define OTP_S_BASE			0x2a480000
+#define OTP_S_SIZE			SIZE_K(64)
+
+#define ROCKCHIP_OTP_HUK_INDEX		0x80	/* RK3576 confirmed; RK3588 uses 0x104 */
+#define ROCKCHIP_OTP_HUK_SIZE		0x4	/* 4 words = 16 bytes */
+
 #else
 #error "Unknown platform flavor"
 #endif

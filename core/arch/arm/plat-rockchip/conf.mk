@@ -93,6 +93,12 @@ CFG_TZDRAM_SIZE  ?= 0x02000000
 CFG_SHMEM_START  ?= 0x72000000
 CFG_SHMEM_SIZE   ?= 0x00400000
 
+# Enable the shared Rockchip Secure OTP driver (read path).
+# ROCKCHIP_OTP_HUK_INDEX = 0x80 (OTP_S words 0x80â0x83, bytes 512â527)
+# confirmed for RK3576 â differs from RK3588 (0x104).  Writing (OTP
+# provisioning) is gated by CFG_RK3576_PERSIST_HUK which defaults to n.
+$(call force,CFG_ROCKCHIP_OTP,y)
+
 # Debug UART -- match TF-A's RK_DBG_UART_BASE (UART0 @ 0x2ad40000) so the
 # OP-TEE banner appears on the same serial cable as the BL31 log.
 CFG_EARLY_CONSOLE := y
